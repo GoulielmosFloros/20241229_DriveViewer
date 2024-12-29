@@ -26,6 +26,7 @@
     "@thatopen/fragments": "~2.4.0",
     "@thatopen/ui": "~2.4.0",
     "@thatopen/ui-obc": "~2.4.0",
+    "googleapis": "^144.0.0",
     "jszip": "3.10.1",
     "three": "0.160.1",
     "web-ifc": "~0.0.66"

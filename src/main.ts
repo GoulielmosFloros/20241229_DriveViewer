@@ -10,7 +10,7 @@ import help from "./components/Panels/Help";
 import camera from "./components/Toolbars/Sections/Camera";
 import measurement from "./components/Toolbars/Sections/Measurement";
 import selection from "./components/Toolbars/Sections/Selection";
-import { AppManager } from "./bim-components";
+import { AppManager, DriveViewer, DriveViewerUI } from "./bim-components";
 
 BUI.Manager.init();
 
@@ -126,6 +126,27 @@ fragments.onFragmentsDisposed.add(({ fragmentIDs }) => {
 const projectInformationPanel = projectInformation(components);
 const elementDataPanel = elementData(components);
 
+const drive = components.get(DriveViewer);
+
+// The first thing to do is to know what parameters are there in the URL
+const { authCode, fileId } = drive.getQueryParams();
+
+if (authCode) {
+  await drive.setCode(authCode);
+}
+
+if (fileId) {
+  const fileData = await drive.getDriveFile(fileId);
+
+  // After the data from the file is returned, add it to the world.
+  if (fileData) {
+    const encoder = new TextEncoder();
+    const buffer = encoder.encode(fileData);
+    const model = await ifcLoader.load(buffer);
+    world.scene.three.add(model);
+  }
+}
+
 const toolbar = BUI.Component.create(() => {
   return BUI.html`
     <bim-tabs floating style="justify-self: center; border-radius: 0.5rem;">
@@ -144,6 +165,9 @@ const toolbar = BUI.Component.create(() => {
         <bim-toolbar>
             ${measurement(world, components)}
         </bim-toolbar>      
+      </bim-tab>
+      <bim-tab label="Drive">
+        ${DriveViewerUI(components)}
       </bim-tab>
     </bim-tabs>
   `;
