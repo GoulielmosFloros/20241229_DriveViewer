@@ -4,7 +4,7 @@ export default async (request: Request) => {
   // The request contains the authData we defined earlier in the component.
   const data = await request.json();
   const { clientId, scopes, clientSecret, env } = data;
-  //
+  console.log(data);
 
   // Pass your credentials and the respective redirect URI.
   // Notice that if you are testing in dev, it will work with the localhost
