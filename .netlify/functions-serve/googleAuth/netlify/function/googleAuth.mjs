@@ -1,0 +1,24 @@
+
+import {createRequire as ___nfyCreateRequire} from "module";
+import {fileURLToPath as ___nfyFileURLToPath} from "url";
+import {dirname as ___nfyPathDirname} from "path";
+let __filename=___nfyFileURLToPath(import.meta.url);
+let __dirname=___nfyPathDirname(___nfyFileURLToPath(import.meta.url));
+let require=___nfyCreateRequire(import.meta.url);
+
+
+// netlify/function/googleAuth.ts
+import { google } from "googleapis";
+var googleAuth_default = async (request) => {
+  const data = await request.json();
+  const { clientId, scopes, clientSecret, env } = data;
+  const oauth = new google.auth.OAuth2(clientId, clientSecret, env);
+  const url = oauth.generateAuthUrl({
+    scope: scopes
+  });
+  return new Response(JSON.stringify(url), { status: 200 });
+};
+export {
+  googleAuth_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsibmV0bGlmeS9mdW5jdGlvbi9nb29nbGVBdXRoLnRzIl0sCiAgInNvdXJjZXNDb250ZW50IjogWyJpbXBvcnQgeyBnb29nbGUgfSBmcm9tIFwiZ29vZ2xlYXBpc1wiO1xyXG5cclxuZXhwb3J0IGRlZmF1bHQgYXN5bmMgKHJlcXVlc3Q6IFJlcXVlc3QpID0+IHtcclxuICAvLyBUaGUgcmVxdWVzdCBjb250YWlucyB0aGUgYXV0aERhdGEgd2UgZGVmaW5lZCBlYXJsaWVyIGluIHRoZSBjb21wb25lbnQuXHJcbiAgY29uc3QgZGF0YSA9IGF3YWl0IHJlcXVlc3QuanNvbigpO1xyXG4gIGNvbnN0IHsgY2xpZW50SWQsIHNjb3BlcywgY2xpZW50U2VjcmV0LCBlbnYgfSA9IGRhdGE7XHJcblxyXG4gIC8vIFBhc3MgeW91ciBjcmVkZW50aWFscyBhbmQgdGhlIHJlc3BlY3RpdmUgcmVkaXJlY3QgVVJJLlxyXG4gIC8vIE5vdGljZSB0aGF0IGlmIHlvdSBhcmUgdGVzdGluZyBpbiBkZXYsIGl0IHdpbGwgd29yayB3aXRoIHRoZSBsb2NhbGhvc3RcclxuICAvLyBhbmQgd2hlbiB1c2VkIGluIHByb2QsIHRoZSBzaXRlJ3MgVVJMIHdpbGwgYmUgdXNlZC5cclxuICBjb25zdCBvYXV0aCA9IG5ldyBnb29nbGUuYXV0aC5PQXV0aDIoY2xpZW50SWQsIGNsaWVudFNlY3JldCwgZW52KTtcclxuICBjb25zdCB1cmwgPSBvYXV0aC5nZW5lcmF0ZUF1dGhVcmwoe1xyXG4gICAgc2NvcGU6IHNjb3BlcyxcclxuICB9KTtcclxuXHJcbiAgcmV0dXJuIG5ldyBSZXNwb25zZShKU09OLnN0cmluZ2lmeSh1cmwpLCB7IHN0YXR1czogMjAwIH0pO1xyXG59O1xyXG4iXSwKICAibWFwcGluZ3MiOiAiOzs7Ozs7Ozs7O0FBQUEsU0FBUyxjQUFjO0FBRXZCLElBQU8scUJBQVEsT0FBTyxZQUFxQjtBQUV6QyxRQUFNLE9BQU8sTUFBTSxRQUFRLEtBQUs7QUFDaEMsUUFBTSxFQUFFLFVBQVUsUUFBUSxjQUFjLElBQUksSUFBSTtBQUtoRCxRQUFNLFFBQVEsSUFBSSxPQUFPLEtBQUssT0FBTyxVQUFVLGNBQWMsR0FBRztBQUNoRSxRQUFNLE1BQU0sTUFBTSxnQkFBZ0I7QUFBQSxJQUNoQyxPQUFPO0FBQUEsRUFDVCxDQUFDO0FBRUQsU0FBTyxJQUFJLFNBQVMsS0FBSyxVQUFVLEdBQUcsR0FBRyxFQUFFLFFBQVEsSUFBSSxDQUFDO0FBQzFEOyIsCiAgIm5hbWVzIjogW10KfQo=

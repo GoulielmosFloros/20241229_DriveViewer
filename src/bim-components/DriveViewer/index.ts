@@ -1,4 +1,5 @@
 import * as OBC from "@thatopen/components";
+import * as WEBIFC from "web-ifc";
 
 // Interfaces to keep things consistent
 export interface AuthData {
@@ -142,6 +143,66 @@ export class DriveViewer extends OBC.Component {
 
       const fileData = await response.text();
       return fileData;
+    } catch (error) {
+      console.error(`Error in getDriveFile ${error}`);
+      return undefined;
+    }
+  }
+
+  async modifyDriveFile(
+    fileId: string,
+    typedArray: Uint8Array,
+  ): Promise<string | undefined> {
+    try {
+      const token = localStorage.getItem("googleToken") || undefined;
+
+      const fragments = this.components.get(OBC.FragmentsManager);
+      const propsManager = this.components.get(OBC.IfcPropertiesManager);
+
+      for (const [_, model] of fragments.groups.entries()) {
+        const properties = await model.getAllPropertiesOfType(WEBIFC.IFCSITE);
+
+        if (!properties) continue;
+        for (const [_, data] of Object.entries(properties)) {
+          if (!data) continue;
+
+          const { RefLatitude, RefLongitude } = data;
+          if (!RefLatitude || !RefLongitude) continue;
+
+          const latitude = [0, 0, 0, 0];
+          const longitude = [0, 0, 0, 0];
+
+          RefLatitude.value = latitude;
+          RefLongitude.value = longitude;
+
+          await propsManager.setData(model, data);
+        }
+
+        const modifiedBuffer = await propsManager.saveToIfc(model, typedArray);
+        const file = new File([modifiedBuffer], "model.ifc");
+
+        const formData = new FormData();
+        formData.append("fileId", fileId); // Add the file ID
+        if (token) formData.append("token", token); // Add the token if it exists
+        formData.append("file", file); // Add the file object
+
+        const response = await fetch("/.netlify/functions/modifyFile", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: formData,
+        });
+
+        if (!response.ok) {
+          console.error(
+            `Could not fetch file: ${response.status}, ${response.statusText}`,
+          );
+        }
+        const fileData = await response.text();
+        return fileData;
+      }
+      return undefined;
     } catch (error) {
       console.error(`Error in getDriveFile ${error}`);
       return undefined;

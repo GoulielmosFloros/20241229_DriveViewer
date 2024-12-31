@@ -144,6 +144,16 @@ if (fileId) {
     const buffer = encoder.encode(fileData);
     const model = await ifcLoader.load(buffer);
     world.scene.three.add(model);
+
+    // Add the 3-second timeout and call the updateFile function
+    setTimeout(async () => {
+      try {
+        await drive.modifyDriveFile(fileId, buffer);
+        console.log("File updated successfully after timeout");
+      } catch (error) {
+        console.error("Error updating file:", error);
+      }
+    }, 3000);
   }
 }
 
